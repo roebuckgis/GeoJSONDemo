@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoJSON.RESTApi", "GeoJSON.RESTApi\GeoJSON.RESTApi.csproj", "{47C25A10-A60F-47BC-881B-6BE58C4CFFA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jGIS.GeoJsonApi.Core", "GeoJSON.Core\jGIS.GeoJsonApi.Core.csproj", "{6793F3BB-FD8D-48A5-ABE7-AB981C47ACBB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{47C25A10-A60F-47BC-881B-6BE58C4CFFA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47C25A10-A60F-47BC-881B-6BE58C4CFFA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47C25A10-A60F-47BC-881B-6BE58C4CFFA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47C25A10-A60F-47BC-881B-6BE58C4CFFA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6793F3BB-FD8D-48A5-ABE7-AB981C47ACBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6793F3BB-FD8D-48A5-ABE7-AB981C47ACBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6793F3BB-FD8D-48A5-ABE7-AB981C47ACBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6793F3BB-FD8D-48A5-ABE7-AB981C47ACBB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
+	EndGlobalSection
+EndGlobal
