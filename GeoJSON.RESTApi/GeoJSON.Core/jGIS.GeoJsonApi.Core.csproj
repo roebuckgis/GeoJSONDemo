@@ -63,7 +63,7 @@
     <Compile Include="DataAccess\SQLServerDAO.cs" />
     <Compile Include="Helpers\MapEntities.cs" />
     <Compile Include="Helpers\SqlGeometry.cs" />
-    <Compile Include="Models\FlickrRepository.cs" />
+    <Compile Include="Models\GeoRSSRepository.cs" />
     <Compile Include="Models\GeoDatasetRepository.cs" />
     <Compile Include="Models\GeoJson.cs" />
     <Compile Include="Models\IGeoJsonRepository.cs" />

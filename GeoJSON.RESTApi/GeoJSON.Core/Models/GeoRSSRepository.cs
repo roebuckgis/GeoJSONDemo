@@ -3,18 +3,18 @@ using jGIS.GeoJsonApi.Core.Helpers;
 
 namespace jGIS.GeoJsonApi.Core.Models
 {
-	public class FlickrRepository : IGeoJsonRepository
+	public class GeoRSSRepository : IGeoJsonRepository
 	{
 		
 		FeatureCollection IGeoJsonRepository.GetAll()
-		{            
-      return MapEntities.GeoRss(url);
+		{
+			throw new NotImplementedException();
 		}
 		FeatureCollection IGeoJsonRepository.GetAll(string identifier)
 		{
 			return MapEntities.GeoRss(identifier);
 		}
-		FeatureCollection IGeoJsonRepository.GetIntersecting(Geometry geometry)
+		FeatureCollection IGeoJsonRepository.GetIntersecting(string focuslayer, string overlaylayer)
 		{
 			throw new NotImplementedException();
 		}

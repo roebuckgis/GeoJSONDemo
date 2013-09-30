@@ -100,7 +100,54 @@ textarea {
 #map { height: 600px; }
 
 
-
+.leaflet-control-custom {
+	box-shadow: 0 1px 7px rgba(0,0,0,0.4);
+	background: #f8f8f9;
+	-webkit-border-radius: 5px;
+	        border-radius: 5px;
+	}
+.leaflet-control-custom-toggle {
+	background-image: url('/MapView/img/tools.png');
+	width: 36px;
+	height: 36px;
+	display: block;
+	background-size: contain;
+	background-repeat: no-repeat;
+	}
+.leaflet-retina .leaflet-control-custom-toggle {
+	background-image: url('/MapView/img/tools.png');
+	background-size: 26px 26px;
+	}
+.leaflet-touch .leaflet-control-custom-toggle {
+	width: 44px;
+	height: 44px;
+	}
+.leaflet-control-custom .leaflet-control-custom-list,
+.leaflet-control-custom-expanded .leaflet-custom-layers-toggle {
+	display: none;
+	}
+.leaflet-control-custom-expanded .leaflet-control-custom-list {
+	display: block;
+	position: relative;
+	}
+.leaflet-control-custom-expanded {
+	padding: 6px 10px 6px 6px;
+	color: #333;
+	background: #fff;
+	}
+.leaflet-control-custom-selector {
+	margin-top: 2px;
+	position: relative;
+	top: 1px;
+	}
+.leaflet-control-custom label {
+	display: block;
+	}
+.leaflet-control-custom-separator {
+	height: 0;
+	border-top: 1px solid #ddd;
+	margin: 5px -10px 5px -6px;
+	}
 
 
 

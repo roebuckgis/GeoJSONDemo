@@ -1,32 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using Microsoft.Practices.Unity;
 using System.Web.Http;
 using jGIS.GeoJsonApi.Core.Models;
 
-namespace GeoJSON.Core.Controllers
+namespace jGIS.GeoJsonApi.Core.Controllers
 {
 	public class GeoJsonController : ApiController
 	{
-		private readonly IGeoJsonRepository _flickrrepository;
+		private readonly IGeoJsonRepository _georssrepository;
 		private readonly IGeoJsonRepository _geodatasetrepository;
 
 
-		public GeoJsonController([Dependency("Flickr")]IGeoJsonRepository flickrrepository, [Dependency("Geodataset")] IGeoJsonRepository geodatasetrepository)
+		public GeoJsonController([Dependency("GeoRss")]IGeoJsonRepository georssrepository, [Dependency("Geodataset")] IGeoJsonRepository geodatasetrepository)
 		{
-			if (flickrrepository == null)
+			if (georssrepository == null)
 			{
 				throw new ArgumentNullException("GeoRSS repository injection is null");
 			}
-			this._flickrrepository = flickrrepository;
+			_georssrepository = georssrepository;
 			if (geodatasetrepository == null)
 			{
 				throw new ArgumentNullException("Geodata repository injection is null");
 			}
-			this._geodatasetrepository = geodatasetrepository;
+			_geodatasetrepository = geodatasetrepository;
 		}
 
 		public FeatureCollection GetGeodataset(string datasetname)
@@ -36,7 +32,13 @@ namespace GeoJSON.Core.Controllers
 
 		public FeatureCollection GetGeoRss(string georssurl)
 		{
-			return _flickrrepository.GetAll(georssurl);
+			return _georssrepository.GetAll(georssurl);
 		}
+
+		public FeatureCollection GetIntersecting(string focuslayer, string overlaylayer)
+		{
+			return _geodatasetrepository.GetIntersecting(focuslayer, overlaylayer);
+		}
+
 	}
 }

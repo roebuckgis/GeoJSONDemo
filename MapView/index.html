@@ -6,29 +6,33 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
+        <title>Map View</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-
+		 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+        
         
         <!-- begin leaflet setup-->
          <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />
 		 <!--[if lte IE 8]>
 		     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.ie.css" />
-		     <link rel="stylesheet" href="css/MarkerCluster.Default.css"/>
+		     
 		     <link rel="stylesheet" href="css/MarkerCluster.ie.css"/>
 		 <![endif]-->
-		 <!--<link rel="stylesheet" href="css/MarkerCluster.css"></script>
-		 <script src="js/leaflet.markercluster.js"></script>-->
+		 <link rel="stylesheet" href="css/MarkerCluster.Default.css"/>
 		 <script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
+		 <link rel="stylesheet" href="css/MarkerCluster.css"></script>
+		 <script src="js/leaflet.markercluster.js"></script>		 		 
+		 <script src="js/leaflet.restoreview.js"></script>
 		 <script>
-		 var map
-		 var layercontrol
+		 var map;
+		 var layercontrol;
+		 //restoreView();
 	 	</script>
         <!-- end leaflet setup -->
     </head>
@@ -39,33 +43,123 @@
 
         
         <div id="map"></div>
-
+		<div id="gpdialog" title="Geoprocessing Tools">
+			<div style="text-align: center">
+			<p>Select features from</p>
+			<p>
+				<select id="inlayer">
+					<option>Flickr</option>
+					<option>Vandalism</option>
+					<option>Flood Zone</option>
+				</select>
+			</p>
+			<p>that are contained by</p>
+			<p>
+				<select id="overlay">
+					<option>Flickr</option>
+					<option>Vandalism</option>
+					<option>Flood Zone</option>
+				</select>
+			</p>
+			</div>
+		</div>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>');</script>
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
 
         <script>
+        	//On ready function
         	$(function() {
 			    
-			    var basemap = L.tileLayer('http://{s}.tile.cloudmade.com/73369a4171764e2e939d79791c6c573f/997/256/{z}/{x}/{y}.png', {
+			    var cmbasemap = L.tileLayer('http://{s}.tile.cloudmade.com/73369a4171764e2e939d79791c6c573f/997/256/{z}/{x}/{y}.png', {
 				    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
 				    maxZoom: 18
 				});
+				 // add an OpenStreetMap tile layer
+				var osmBasemap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+				    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+				});
 				var baseMaps = {
-				    "BaseMap": basemap
+				    "CloudeMade BaseMap": cmbasemap,
+				    "OpenStreetMap": osmBasemap
 				};
-				map = L.map('map', {layers: [basemap]}).setView([43.6137, -116.2377], 11);
+				map = L.map('map', {layers: [cmbasemap, osmBasemap]});
+				
+				if (!map.restoreView()) {
+				 map.setView([43.6137, -116.2377], 11);
+				}
 				layercontrol = L.control.layers(baseMaps).addTo(map);
 				L.control.scale().addTo(map);
-				getGeoData("georssurl=http://www.adaweb.net/mapping/Vandal.xml", "Vandalism");
-				getGeoData("georssurl=http://www.flickr.com/services/feeds/geo/United+States/Idaho/Boise?format=rss_200");
-				getGeoData("datasetname=FloodZone",  "Flood Zone");
+				map.addControl(GeoprocessorControl(GeoprocessorFunction));
+				defineOverlayData();
 				
-				
-				
+				$( "#gpdialog").dialog({
+			      autoOpen: false,
+			      height: 325,
+			      width: 350,
+			      modal: true,
+			      buttons: {
+			      	"Execute": function(){
+			      		
+			      		$(this).dialog('close');
+			      		executeGeoprocessing();
+			      	}
+			      }
+			      });
 			});
-			function getGeoData(route, displayname){
+			
+			function defineOverlayData()
+			{
+				var vicon = L.icon({
+				    iconUrl: 'img/Vandalism.png',
+
+				   	iconSize: [32, 32],
+					iconAnchor: [16, 32],
+					popupAnchor: [0, -28]
+
+				});
+				getGeoData("georssurl=http://www.adaweb.net/mapping/Vandal.xml", "Vandalism", {},vicon);
+				
+				var ficon = L.icon({
+				    iconUrl: 'img/flickr.png',
+
+				   	iconSize: [32, 32],
+					iconAnchor: [16, 32],
+					popupAnchor: [0, -28]
+
+				});
+				getGeoData("georssurl=http://www.flickr.com/services/feeds/geo/United+States/Idaho/Boise?format=rss_200", "Flickr", {}, ficon);
+				
+				getGeoData("datasetname=FloodZone",  "Flood Zone", {color: "#ff0000"}, {});
+			}
+			GeoprocessorFunction = function () { $( "#gpdialog" ).dialog( "open" );};
+			function executeGeoprocessing(){
+				alert('executed');
+				var jqxhr = $.getJSON( "http://localhost/GeoJSON.RESTApi/api/GeoJSON?"+route, function() {
+				  console.log( "success" );
+				})
+				  .done(function() {
+				    console.log( "second success" );
+				  })
+				  .fail(function() {
+				    console.log( "error" );
+				  })
+				  .always(function() {
+				    console.log( "complete" );
+				  });
+				 
+				// Perform other work here ...
+				 
+				// Set another completion function for the request above
+				jqxhr.complete(function(data) {
+				  console.log( "second complete" );
+				  
+				});
+			}
+			
+			function getGeoData(route, displayname, cssstyle, mapicon){
 				//"http://localhost/GeoJSON.RESTApi/api/GeoJSON?datasetname=FloodZone"
 				var jqxhr = $.getJSON( "http://localhost/GeoJSON.RESTApi/api/GeoJSON?"+route, function() {
 				  console.log( "success" );
@@ -85,11 +179,17 @@
 				// Set another completion function for the request above
 				jqxhr.complete(function(data) {
 				  console.log( "second complete" );
+				  var markers = new L.MarkerClusterGroup();
 				   var ol = L.geoJson(data.responseJSON, {
-					    onEachFeature: onEachFeature
-					}).addTo(map);
-					
-					layercontrol.addOverlay(ol, displayname);
+					    onEachFeature: onEachFeature,
+					    style: cssstyle,
+					    pointToLayer: function (feature, latlng) {
+							return L.marker(latlng, {icon: mapicon});}
+
+					});//.addTo(map);
+					markers.addLayer(ol);
+					map.addLayer(markers);
+					layercontrol.addOverlay(markers, displayname);
 				});
 			}
 			function onEachFeature(feature, layer) {
@@ -98,6 +198,34 @@
 			        layer.bindPopup(feature.properties.popupContent);
 			    }
 			}
+			
+			GeoprocessorControl = function(gpfunction) {
+
+			    var control = new (L.Control.extend({
+			    options: { position: 'topright' },
+			    onAdd: function (map) {
+			        controlDiv = L.DomUtil.create('div','leaflet-control-custom leaflet-control');
+			        L.DomEvent
+			            .addListener(controlDiv, 'click', L.DomEvent.stopPropagation)
+			            .addListener(controlDiv, 'click', L.DomEvent.preventDefault)
+			            .addListener(controlDiv, 'click', this.GeoprocessorFunction);
+			
+			        // Set CSS for the control interior
+			        var control = L.DomUtil.create('a', 'leaflet-control-custom-toggle', controlDiv);
+			        control.title = 'Click for Geoprocessing Tools';
+				
+			        return controlDiv;
+			    }
+			    }));
+			
+			    control.GeoprocessorFunction = gpfunction;
+			
+			    return control;
+			};
+			
+			//GeoprocessorFunction = function () { alert("Hello World");};
+			
+			
         </script>
     </body>
 </html>

@@ -17,7 +17,7 @@ namespace jGIS.GeoJsonApi.Core.Models
 		{
 			return MapEntities.Geodataset(identifier);
 		}
-		public FeatureCollection GetIntersecting(Geometry geometry)
+		public FeatureCollection GetIntersecting(string focuslayer, string overlaylayer)
 		{
 			throw new NotImplementedException();
 		}
