@@ -13,7 +13,7 @@ namespace jGIS.GeoJsonApi.Core.Helpers
 
 		public static Feature GetAddressPoint(string address, double distance)
 		{
-			//var features = new List<Feature>();
+
 
 			var parameters = new List<SqlParameter>();
 			var url = new SqlParameter("@address", address);
@@ -21,7 +21,7 @@ namespace jGIS.GeoJsonApi.Core.Helpers
 			var dataTable = SqlServerDao.ExecuteProcDataTable("GetBingAddressPoint", parameters);
 			var row = dataTable.Rows[0];
 
-			var geography = (SqlGeography)row["point"];
+			var geography = (SqlGeography)row["Shape"];
 			if (distance > 0) geography = geography.STBuffer(distance);
 			var geometry = GetGeometry(geography);
 
@@ -34,16 +34,7 @@ namespace jGIS.GeoJsonApi.Core.Helpers
 			};
 
 			return feature;
-			//features.Add(feature);
-
-
-			//var fc = new FeatureCollection()
-			//{
-			//	features = features.ToArray()
-			//};
-			//JavaScriptSerializer serializer = new JavaScriptSerializer();
-			//string serialize = serializer.Serialize(fc);
-			//return serialize;
+			
 		}
 
 
@@ -60,7 +51,7 @@ namespace jGIS.GeoJsonApi.Core.Helpers
 			foreach (var row in dataTable.AsEnumerable())
 			{
 				//point description
-				var geography = (SqlGeography)row["point"];
+				var geography = (SqlGeography)row["Shape"];
 				var point = GetGeometry(geography);
 				var properties = GetProperties(row);
 
@@ -140,7 +131,7 @@ namespace jGIS.GeoJsonApi.Core.Helpers
 			foreach (var row in dataTable.AsEnumerable())
 			{
 				//point description
-				var geography = (SqlGeography)row["point"];
+				var geography = (SqlGeography)row["Shape"];
 				var point = GetGeometry(geography);
 				var properties = GetProperties(row);
 				var feature = new Feature
@@ -157,26 +148,13 @@ namespace jGIS.GeoJsonApi.Core.Helpers
 			};
 
 			return fc;
-			//JavaScriptSerializer serializer = new JavaScriptSerializer();
-			//string serialize = serializer.Serialize(fc);
-			//return serialize;
 		}
 
 		private static Geometry GetGeometry(SqlGeography sg)
 		{
 			return SqlGeometry.Decode(sg);
 		}
-		//private Geometry GetGeometry(string WKT)
-		//{
-		//    var gstring = new SqlChars(WKT);
-		//    var sg = SqlGeography.STGeomFromText(gstring, 4326);
-		//    return SQLServerGeometryHelper.Decode(sg);
-		//}
-		//private string SerializeJson(object obj)
-		//{
-		//	var jser = new JavaScriptSerializer();
-		//	return jser.Serialize(obj);
-		//}
+		
 
 	}
 }
