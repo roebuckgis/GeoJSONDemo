@@ -1,4 +1,5 @@
 ﻿using System;
+using jGIS.GeoJsonApi.Core.DataAccess;
 using jGIS.GeoJsonApi.Core.Helpers;
 
 namespace jGIS.GeoJsonApi.Core.Models
@@ -12,7 +13,8 @@ namespace jGIS.GeoJsonApi.Core.Models
 		}
 		FeatureCollection IGeoJsonRepository.GetAll(string identifier)
 		{
-			return MapEntities.GeoRss(identifier);
+            var result = GeoDataAccess.GeoRss(identifier);
+            return Helpers.GeoJson.GetFeatureCollection(result);
 		}
 		FeatureCollection IGeoJsonRepository.GetIntersecting(string focuslayer, string overlaylayer)
 		{
@@ -43,5 +45,11 @@ namespace jGIS.GeoJsonApi.Core.Models
 		{
 			throw new NotImplementedException();
 		}
+
+        FeatureCollection GetGeoCoded(string address)
+        {
+            var result = GeoDataAccess.GetAddressPoint(address);
+            return Helpers.GeoJson.GetFeatureCollection(result);
+        }
 	}
 }

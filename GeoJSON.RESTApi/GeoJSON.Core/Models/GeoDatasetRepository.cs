@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using jGIS.GeoJsonApi.Core.DataAccess;
 using jGIS.GeoJsonApi.Core.Helpers;
 
 namespace jGIS.GeoJsonApi.Core.Models
@@ -15,11 +16,13 @@ namespace jGIS.GeoJsonApi.Core.Models
 		}
 		public FeatureCollection GetAll(string identifier)
 		{
-			return MapEntities.Geodataset(identifier);
+            var result = GeoDataAccess.GetSpatialData(identifier);
+            return Helpers.GeoJson.GetFeatureCollection(result);
 		}
-		public FeatureCollection GetIntersecting(string focuslayer, string overlaylayer)
+		public FeatureCollection GetIntersecting(string focuslayer, string overlayer)
 		{
-			throw new NotImplementedException();
+            var result = GeoDataAccess.Intersect(focuslayer, overlayer);
+            return Helpers.GeoJson.GetFeatureCollection(result);
 		}
 
 		public Feature Get(int id)

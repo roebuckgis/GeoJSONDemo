@@ -8,7 +8,7 @@ namespace jGIS.GeoJsonApi.Core.DataAccess
 
 	public class SqlServerDao
 	{
-		private static readonly string DbConn = ConfigurationManager.AppSettings["CLR_Demo"];
+		private static readonly string DbConn = ConfigurationManager.AppSettings["jGISdb"];
 
 
 		public static DataTable ExecuteSqlDataTable(string sql)

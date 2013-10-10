@@ -107,7 +107,7 @@ textarea {
 	        border-radius: 5px;
 	}
 .leaflet-control-custom-toggle {
-	background-image: url('/MapView/img/tools.png');
+	background-image: url('/jGISMapView/img/tools.png');
 	width: 36px;
 	height: 36px;
 	display: block;
@@ -115,7 +115,7 @@ textarea {
 	background-repeat: no-repeat;
 	}
 .leaflet-retina .leaflet-control-custom-toggle {
-	background-image: url('/MapView/img/tools.png');
+	background-image: url('/jGISMapView/img/tools.png');
 	background-size: 26px 26px;
 	}
 .leaflet-touch .leaflet-control-custom-toggle {

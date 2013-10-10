@@ -61,7 +61,7 @@
     <Compile Include="Controllers\GeoJsonController.cs" />
     <Compile Include="DataAccess\GeoDataAccess.cs" />
     <Compile Include="DataAccess\SQLServerDAO.cs" />
-    <Compile Include="Helpers\MapEntities.cs" />
+    <Compile Include="Helpers\GeoJson.cs" />
     <Compile Include="Helpers\SqlGeometry.cs" />
     <Compile Include="Models\GeoRSSRepository.cs" />
     <Compile Include="Models\GeoDatasetRepository.cs" />

@@ -63,7 +63,7 @@ namespace jGIS.GeoJsonApi.Core.Helpers
 				case "multipoint":
 				case "multilinestring":
 				case "multipolygon":
-				//case "geometrycollection":
+				case "geometrycollection":
 				//	GeometryGroup mpG = new GeometryGroup();
 				//	for (int i = 1; i <= g.STNumGeometries().Value; i++)
 				//		mpG.Children.Add(Decode(g.STGeometryN(i)));
